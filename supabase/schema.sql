@@ -58,3 +58,6 @@ drop policy if exists fz_moves_own on public.fz_moves;
 create policy fz_moves_own on public.fz_moves for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 drop policy if exists fz_settings_own on public.fz_settings;
 create policy fz_settings_own on public.fz_settings for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Días antes de la fecha de pago en que se avisa (0 = el mismo día).
+alter table public.fz_settings add column if not exists remind_days int[];

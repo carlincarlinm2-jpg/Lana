@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#06100c">
-<meta name="north-version" content="1">
+<meta name="north-version" content="2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="North">
@@ -479,7 +479,8 @@ async function loadData(){
 }
 async function saveSettings(patch){
   settings={...settings,...patch};
-  const {error}=await sb.from('fz_settings').upsert({user_id:user.id,monthly_income:settings.monthly_income,budget:settings.budget,updated_at:new Date().toISOString()});
+  const row={user_id:user.id,monthly_income:settings.monthly_income,budget:settings.budget,updated_at:new Date().toISOString()};if(settings.remind_days)row.remind_days=settings.remind_days;
+  const {error}=await sb.from('fz_settings').upsert(row);
   if(error)throw error;
 }
 
@@ -622,7 +623,7 @@ function openAccount(id,kind){
     <div class="row2"><div class="field"><label>Cuánto al mes</label><input id="fMonthly" inputmode="decimal" value="${v('monthly_payment')}" placeholder="Ej. 499"></div>
     <div class="field"><label>Día de pago</label><input id="fPay" inputmode="numeric" value="${v('pay_day')}" placeholder="Ej. 1"></div></div>`;
   openSheet(head(id?'Editar':'Agregar '+KIND_LBL[kind].toLowerCase(),kind==='card'?'Los datos vienen en tu app del banco o en tu estado de cuenta.':'',id?`openDetail('${id}')`:'')+fields+`
-    <div class="li" style="cursor:default"><div class="ico">${ic('bell',19)}</div><div class="mid"><div class="t">Avisarme antes de pagar</div><div class="s">3 días antes, 1 día antes y el mismo día${kind==='card'?', y en tu fecha de corte':''}</div></div><input type="checkbox" class="tgl" id="fNotify" ${a.notify===false?'':'checked'} onchange="sfx('toggle')"></div>
+    <div class="li" style="cursor:default"><div class="ico">${ic('bell',19)}</div><div class="mid"><div class="t">Avisarme antes de pagar</div><div class="s">${remindTxt()}${kind==='card'?', y en tu fecha de corte':''}</div></div><input type="checkbox" class="tgl" id="fNotify" ${a.notify===false?'':'checked'} onchange="sfx('toggle')"></div>
     <button class="btn" style="margin-top:14px" id="fSave" onclick="saveAccount('${id||''}','${kind}')">${ic('check',18)} Guardar</button>`);
 }
 function dayVal(id){const n=parseInt(($(id)?.value||'').trim());return n>=1&&n<=31?n:null}
@@ -866,6 +867,7 @@ function settingsView(){
   <section class="card list">
     <div class="li" onclick="openIncome()"><div class="ico">${ic('wallet',19)}</div><div class="mid"><div class="t">Ingreso mensual</div><div class="s">${settings.monthly_income?mxn(settings.monthly_income):'Sin definir'}</div></div>${ic('chevron',18)}</div>
     <div class="li" onclick="${st==='on'?'testPush(this)':'openNotifPrompt()'}"><div class="ico">${ic('bell',19)}</div><div class="mid"><div class="t">Notificaciones de pago</div><div class="s">${pushTxt}</div></div>${st==='on'?'<span class="pill ok">Probar</span>':ic('chevron',18)}</div>
+    <div class="li" onclick="openRemind()"><div class="ico">${ic('calendar',19)}</div><div class="mid"><div class="t">¿Cuándo te aviso de tus pagos?</div><div class="s">${remindTxt()}</div></div>${ic('chevron',18)}</div>
     <label class="li"><div class="ico">${ic(soundOn()?'sound':'mute',19)}</div><div class="mid"><div class="t">Sonidos</div><div class="s">Clics y festejos al pagar</div></div><input type="checkbox" class="tgl" ${soundOn()?'checked':''} onchange="ls('lana_sound',this.checked?'on':'off');sfx('toggle');render()"></label>
     <label class="li"><div class="ico">${ic('eyeOff',19)}</div><div class="mid"><div class="t">Ocultar montos</div><div class="s">Por si alguien ve tu pantalla</div></div><input type="checkbox" class="tgl" ${hideOn()?'checked':''} onchange="toggleHide()"></label>
     <div class="li" onclick="openName()"><div class="ico">${ic('user',19)}</div><div class="mid"><div class="t">Mi nombre</div></div>${ic('chevron',18)}</div>
@@ -878,8 +880,34 @@ function openIncome(){
   setTimeout(()=>$('incAmt')?.focus(),250);
 }
 async function saveIncome(btn){btn.disabled=true;try{await saveSettings({monthly_income:num($('incAmt').value)});sfx('ok');closeSheet();render();toast('Guardado')}catch(e){btn.disabled=false;alert('No se pudo guardar: '+(e.message||e))}}
+
+function askName(){openSheet(head('¿Cómo te llamas?','Para saludarte por tu nombre y no por tu correo.')+`<div style="display:flex;justify-content:center">${coinSVG(110,'wave')}</div><div class="field"><input id="nmIn" placeholder="Tu nombre" autocomplete="given-name"></div><button class="btn" onclick="saveName(this)">${ic('check',18)} Guardar</button>`);setTimeout(()=>$('nmIn')?.focus(),300)}
 function openName(){openSheet(head('Mi nombre')+`<div class="field"><input id="nmIn" value="${esc(user?.user_metadata?.name||'')}" placeholder="Tu nombre"></div><button class="btn" onclick="saveName(this)">${ic('check',18)} Guardar</button>`)}
-async function saveName(btn){btn.disabled=true;const {data,error}=await sb.auth.updateUser({data:{name:$('nmIn').value.trim()}});if(error){btn.disabled=false;return alert(error.message)}user=data.user;sfx('ok');closeSheet();render()}
+async function saveName(btn){const nm=$('nmIn').value.trim();if(!nm){toast('Escribe tu nombre','think');return}btn.disabled=true;const {data,error}=await sb.auth.updateUser({data:{name:nm}});if(error){btn.disabled=false;return alert(error.message)}user=data.user;sfx('ok');closeSheet();render();toast('¡Mucho gusto, '+userName()+'!')}
+
+
+/* ---- días de aviso antes del pago ---- */
+const DEF_DAYS=[14,8,2,0];
+function remindDays(){return (Array.isArray(settings.remind_days)&&settings.remind_days.length?settings.remind_days:DEF_DAYS).slice().sort((a,b)=>b-a)}
+function remindTxt(){const d=remindDays();const parts=d.map(n=>n===0?'el mismo día':n===1?'1 día antes':n+' días antes');return parts.length>1?parts.slice(0,-1).join(', ')+' y '+parts.slice(-1):parts[0]}
+function openRemind(){
+  const cur=new Set(remindDays());
+  openSheet(head('¿Cuándo te aviso?','Antes de tu fecha límite de pago. Elige todos los que quieras.')+`
+  <div class="chips">${[21,15,14,10,8,7,5,3,2,1,0].map(n=>`<button class="chipb ${cur.has(n)?'on':''}" data-rd="${n}" onclick="this.classList.toggle('on');sfx('toggle');rdPreview()">${n===0?'El mismo día':n===1?'1 día antes':n+' días antes'}</button>`).join('')}</div>
+  <div class="tip" id="rdPrev"></div>
+  <button class="btn" style="margin-top:14px" onclick="saveRemind(this)">${ic('check',18)} Guardar</button>`);
+  rdPreview();
+}
+function rdPreview(){
+  const days=[...document.querySelectorAll('[data-rd].on')].map(b=>+b.dataset.rd).sort((a,b)=>b-a);const el=$('rdPrev');if(!el)return;
+  if(!days.length){el.innerHTML=ic('alert',18)+'<div>Elige al menos uno.</div>';return}
+  const ex=days.map(n=>n===0?'27':String(27-n)).join(', ');
+  el.innerHTML=ic('bell',18)+`<div>Ejemplo: si pagas el <b>27</b>, te aviso los días <b>${ex}</b>. También te aviso en tu fecha de corte.</div>`;
+}
+async function saveRemind(btn){
+  const days=[...document.querySelectorAll('[data-rd].on')].map(b=>+b.dataset.rd);if(!days.length)return toast('Elige al menos uno','think');
+  btn.disabled=true;try{await saveSettings({remind_days:days.sort((a,b)=>b-a)});sfx('ok');closeSheet();render();toast('¡Listo! Así te aviso')}catch(e){btn.disabled=false;alert('No se pudo guardar: '+(e.message||e))}
+}
 
 /* ====================== notificaciones ====================== */
 function pushState(){
@@ -893,7 +921,7 @@ function pushState(){
 function openNotifPrompt(afterId){
   const st=pushState();
   const body={install:'En iPhone: abre North en Safari, toca Compartir y luego "Agregar a pantalla de inicio". Abre North desde ese ícono y activa los avisos en Ajustes.',unsupported:'Abre North desde el ícono instalado en tu teléfono para recibir avisos.',denied:'Las notificaciones están bloqueadas. Actívalas en Ajustes del teléfono › Notificaciones › North.',on:'Ya están activadas en este dispositivo.'}[st];
-  openSheet(head('¿Te aviso antes de pagar?')+`<div style="display:flex;justify-content:center">${coinSVG(120,'wave')}</div><p style="text-align:center;color:var(--ink2);line-height:1.5">Te mando una notificación 3 días antes, 1 día antes y el día de tu fecha límite, y en tu fecha de corte. Así nunca pagas intereses por olvido.</p>
+  openSheet(head('¿Te aviso antes de pagar?')+`<div style="display:flex;justify-content:center">${coinSVG(120,'wave')}</div><p style="text-align:center;color:var(--ink2);line-height:1.5">Te mando una notificación ${remindTxt()} de tu fecha límite, y en tu fecha de corte. Así nunca pagas intereses por olvido.</p>
   ${body?`<div class="tip">${ic('bulb',18)}<div>${body}</div></div>`:`<button class="btn" onclick="enablePush(this,'${afterId||''}')">${ic('bell',18)} Sí, avísame</button>`}
   <button class="btn alt" onclick="${afterId?`openDetail('${afterId}')`:'closeSheet()'}">Ahora no</button>`);
 }
@@ -947,6 +975,7 @@ async function start(u){
   user=u;$('auth').classList.remove('open');
   try{await loadData()}catch(e){console.error(e);$('main').innerHTML=`<section class="card empty" style="margin-top:40px"><div class="mas">${coinSVG(100,'think')}</div><b>No pude cargar tus datos</b><br>Revisa tu internet e intenta de nuevo.<div style="margin-top:14px"><button class="btn" onclick="location.reload()">Reintentar</button></div></section>`;hideSplash();return}
   buildNav();render();hideSplash();
+  if(!user.user_metadata?.name)setTimeout(()=>askName(),700);
 }
 (async function boot(){
   $('splashLogo').innerHTML=coinSVG(130,'wave');$('authLogo').innerHTML=coinSVG(130,'wave');
