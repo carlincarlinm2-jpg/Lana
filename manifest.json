@@ -1,6 +1,6 @@
 {
-  "name": "Lana — Mis finanzas",
-  "short_name": "Lana",
+  "name": "North — Mis finanzas",
+  "short_name": "North",
   "description": "Tus tarjetas, pagos y gastos, con avisos antes de cada fecha de pago.",
   "start_url": "./index.html",
   "scope": "./",

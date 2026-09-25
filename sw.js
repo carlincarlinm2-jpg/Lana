@@ -1,6 +1,6 @@
-// Service worker de Lana: la página siempre se pide a la red primero (para no quedarse con versiones viejas)
+// Service worker de North: la página siempre se pide a la red primero (para no quedarse con versiones viejas)
 // y los íconos se guardan en caché. También recibe los avisos de pago.
-const CACHE = 'lana-static-v1';
+const CACHE = 'north-static-v2';
 const ASSETS = ['./manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).catch(() => {})); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))); self.clients.claim(); });
@@ -11,8 +11,8 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((r) => { if (r.ok) { const cp = r.clone(); caches.open(CACHE).then((c) => c.put(e.request, cp)); } return r; })));
 });
 self.addEventListener('push', (e) => {
-  let d = {}; try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: 'Lana', body: e.data && e.data.text() }; }
-  e.waitUntil(self.registration.showNotification(d.title || 'Lana', { body: d.body || '', tag: d.tag, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', data: { url: d.url || '/' }, vibrate: [120, 60, 120] }));
+  let d = {}; try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: "North", body: e.data && e.data.text() }; }
+  e.waitUntil(self.registration.showNotification(d.title || "North", { body: d.body || '', tag: d.tag, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', data: { url: d.url || '/' }, vibrate: [120, 60, 120] }));
 });
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();

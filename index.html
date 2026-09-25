@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#06100c">
-<meta name="lana-version" content="1">
+<meta name="north-version" content="1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lana">
+<meta name="apple-mobile-web-app-title" content="North">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
-<title>Lana — Mis finanzas</title>
+<title>North — Mis finanzas</title>
 <style>
 :root{--bg:#06100c;--bg2:#0a1712;--card:#0f1f18;--card2:#142a20;--line:#1d3529;--ink:#eafff4;--ink2:#b9d4c6;--muted:#7d9a8b;--brand:#2ee59d;--brand2:#12b981;--lime:#c6f432;--gold:#f5c542;--warn:#ffb547;--danger:#ff5d6c;--r:22px;color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -185,21 +185,31 @@ main{flex:1;min-width:0;max-width:560px;margin:0 auto;padding:calc(env(safe-area
 .coin-svg .cs{transform-box:fill-box;transform-origin:50% 50%;animation:cshadow 3.2s ease-in-out infinite}
 .coin-svg .shine{animation:cshine 4.5s ease-in-out infinite}
 .coin-svg .glass{transform-box:fill-box;transform-origin:50% 50%;animation:cglass 6s ease-in-out infinite}
-.coin-svg .arm{transform-box:fill-box;transform-origin:10% 90%}
-.coin-svg.m-wave .arm.r{animation:cwave .9s ease-in-out infinite}
+.coin-svg .arm{transform-box:fill-box;transform-origin:20% 10%}
+.coin-svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:chead 3.2s ease-in-out infinite}
+.coin-svg .case{transform-box:fill-box;transform-origin:50% 0%;animation:ccase 2.2s ease-in-out infinite}
+.coin-svg .bill{opacity:0}
+.coin-svg.m-celebrate .bill,.coin-svg.m-happy .bill{animation:cbill 1.2s ease-out infinite}
+.coin-svg .b2{animation-delay:.3s!important}.coin-svg .b3{animation-delay:.6s!important}
+.coin-svg.m-wave .arm.l{animation:cwavel .9s ease-in-out infinite}
+@keyframes chead{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes ccase{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes cwavel{0%,100%{transform:rotate(0)}50%{transform:rotate(55deg)}}
+@keyframes cbill{0%{opacity:0;transform:translate(0,0) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--bx,6px),-38px) rotate(40deg)}}
+.coin-svg .b1{--bx:-10px}.coin-svg .b3{--bx:14px}
 .coin-svg.m-happy .cb{animation:chop .9s cubic-bezier(.3,1.6,.5,1) infinite}
 .coin-svg.m-celebrate .cb{animation:cspin 1.1s cubic-bezier(.3,1.3,.5,1) infinite}
 .coin-svg.m-think .cb{animation:ctilt 2.4s ease-in-out infinite}
 .coin-svg.m-sleep .cb{animation:cbreath 4s ease-in-out infinite}
 .coin-svg .z{animation:zz 2.4s ease-in-out infinite;opacity:0}.coin-svg .z2{animation-delay:.8s}.coin-svg .z3{animation-delay:1.6s}
 .coin-svg:active .cb{animation:csquish .35s ease}
-@keyframes cfloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-7px) rotate(3deg)}}
+@keyframes cfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes cshadow{0%,100%{transform:scaleX(1);opacity:.35}50%{transform:scaleX(.8);opacity:.2}}
 @keyframes cshine{0%,60%{transform:translateX(-80px)}80%,100%{transform:translateX(90px)}}
 @keyframes cglass{0%,90%,100%{transform:translateY(0)}94%{transform:translateY(-3px)}}
 @keyframes cwave{0%,100%{transform:rotate(0)}50%{transform:rotate(-28deg)}}
 @keyframes chop{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-12px) scale(1.03,.97)}}
-@keyframes cspin{0%{transform:translateY(0) scaleX(1)}30%{transform:translateY(-14px) scaleX(-1)}60%{transform:translateY(-14px) scaleX(1)}100%{transform:translateY(0) scaleX(1)}}
+@keyframes cspin{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-16px) rotate(-6deg)}60%{transform:translateY(-16px) rotate(6deg)}}
 @keyframes ctilt{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
 @keyframes cbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.03,.97)}}
 @keyframes csquish{50%{transform:scale(1.12,.86)}}
@@ -214,7 +224,7 @@ main{flex:1;min-width:0;max-width:560px;margin:0 auto;padding:calc(env(safe-area
 
 <div class="auth" id="auth"><div class="auth-box">
   <div class="auth-logo" id="authLogo"></div>
-  <h1>Lana</h1>
+  <h1>North</h1>
   <p class="sub" id="authSub"><b>Tu lana, bajo control.</b>Tarjetas, pagos y gastos en un solo lugar, y te aviso antes de cada fecha de pago.</p>
   <div id="loginCard">
     <div class="err" id="loginErr"></div>
@@ -353,28 +363,32 @@ function coinSVG(size=90,mood='idle'){
   if(isSleep()&&mood!=='celebrate')mood='sleep';
   const id='c'+(++_cid),sleep=mood==='sleep';
   const eyes=sleep
-    ?`<path d="M36 52q6 5 12 0M60 52q6 5 12 0" stroke="#08331f" stroke-width="3.2" fill="none" stroke-linecap="round"/>`
-    :`<g class="glass"><path d="M28 45h52" stroke="#050806" stroke-width="3.5" stroke-linecap="round"/><path d="M29 45h20q1 13-10 13t-10-13z" fill="#050806"/><path d="M59 45h20q1 13-10 13t-10-13z" fill="#050806"/><path d="M33 48l6-1M63 48l6-1" stroke="#4dffb8" stroke-width="2" stroke-linecap="round" opacity=".8"/></g>`;
+    ?`<path d="M47 40q5 4 10 0M63 40q5 4 10 0" stroke="#08331f" stroke-width="2.8" fill="none" stroke-linecap="round"/>`
+    :`<g class="glass"><path d="M40 36h40" stroke="#050806" stroke-width="3" stroke-linecap="round"/><path d="M41 36h16q1 11-8 11t-8-11z" fill="#050806"/><path d="M63 36h16q1 11-8 11t-8-11z" fill="#050806"/><path d="M45 39l5-1M67 39l5-1" stroke="#4dffb8" stroke-width="1.8" stroke-linecap="round" opacity=".85"/></g>`;
   const mouth=mood==='happy'||mood==='celebrate'||mood==='wave'
-    ?`<path d="M44 66q10 11 20 0" fill="#06331f" stroke="#06331f" stroke-width="2.4" stroke-linejoin="round"/><path d="M48 70q6 4 12 0" fill="#ff7b8a"/>`
-    :mood==='think'?`<path d="M47 69q7-3 13 1" stroke="#06331f" stroke-width="3" fill="none" stroke-linecap="round"/>`
-    :sleep?`<ellipse cx="54" cy="68" rx="3.5" ry="2.5" fill="#06331f"/>`
-    :`<path d="M45 66q9 8 18 0" stroke="#06331f" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
-  const zz=sleep?`<text class="z" x="84" y="26" font-size="13" font-weight="800" fill="#b9ffdf">z</text><text class="z z2" x="92" y="16" font-size="16" font-weight="800" fill="#b9ffdf">z</text><text class="z z3" x="100" y="6" font-size="19" font-weight="800" fill="#b9ffdf">Z</text>`:'';
-  return `<svg class="coin-svg m-${mood}" width="${size}" height="${size}" viewBox="0 0 108 116" onclick="coinPoke(this)" role="img" aria-label="Lana, tu moneda">
+    ?`<path d="M52 52q8 9 16 0z" fill="#06331f" stroke="#06331f" stroke-width="2" stroke-linejoin="round"/><path d="M55 55q5 3 10 0" fill="#ff7b8a"/>`
+    :mood==='think'?`<path d="M54 55q6-3 11 1" stroke="#06331f" stroke-width="2.6" fill="none" stroke-linecap="round"/>`
+    :sleep?`<ellipse cx="60" cy="55" rx="3" ry="2.2" fill="#06331f"/>`
+    :`<path d="M52 52q8 7 16 0" stroke="#06331f" stroke-width="2.8" fill="none" stroke-linecap="round"/>`;
+  const zz=sleep?`<text class="z" x="88" y="20" font-size="12" font-weight="800" fill="#b9ffdf">z</text><text class="z z2" x="96" y="11" font-size="15" font-weight="800" fill="#b9ffdf">z</text><text class="z z3" x="104" y="2" font-size="18" font-weight="800" fill="#b9ffdf">Z</text>`:'';
+  const bills=`<g class="bills"><rect class="bill b1" x="92" y="104" width="13" height="7" rx="1.5" fill="#7dffc0" stroke="#0a8a57"/><rect class="bill b2" x="98" y="104" width="13" height="7" rx="1.5" fill="#7dffc0" stroke="#0a8a57"/><rect class="bill b3" x="95" y="104" width="13" height="7" rx="1.5" fill="#7dffc0" stroke="#0a8a57"/></g>`;
+  return `<svg class="coin-svg m-${mood}" width="${size}" height="${size}" viewBox="0 0 120 150" onclick="coinPoke(this)" role="img" aria-label="North, tu asesor de bolsillo">
   <defs><radialGradient id="${id}g" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#b8ffd9"/><stop offset=".45" stop-color="#34e39a"/><stop offset="1" stop-color="#0c9a62"/></radialGradient>
-  <linearGradient id="${id}r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0fb877"/><stop offset="1" stop-color="#066b43"/></linearGradient>
-  <clipPath id="${id}c"><circle cx="54" cy="54" r="40"/></clipPath></defs>
-  <ellipse class="cs" cx="54" cy="110" rx="28" ry="5" fill="#000"/>
+  <linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23303a"/><stop offset="1" stop-color="#11181e"/></linearGradient>
+  <linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a2b"/><stop offset="1" stop-color="#5a3715"/></linearGradient></defs>
+  <ellipse class="cs" cx="60" cy="145" rx="30" ry="4.5" fill="#000"/>
   <g class="cb">
-    <g class="arm l"><path d="M16 64q-10 4-8 14" stroke="#0c9a62" stroke-width="6" fill="none" stroke-linecap="round"/></g>
-    <g class="arm r"><path d="M92 62q10-6 8-18" stroke="#0c9a62" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="100" cy="42" r="5" fill="#34e39a"/></g>
-    <circle cx="54" cy="56" r="44" fill="url(#${id}r)"/>
-    <circle cx="54" cy="54" r="44" fill="url(#${id}g)"/>
-    <circle cx="54" cy="54" r="37" fill="none" stroke="#0a8a57" stroke-width="2" stroke-dasharray="2 5" opacity=".7"/>
-    <g clip-path="url(#${id}c)"><rect class="shine" x="30" y="-10" width="14" height="130" fill="#fff" opacity=".28" transform="rotate(20 54 54)"/></g>
-    <text x="54" y="37" text-anchor="middle" font-size="14" font-weight="800" fill="#0a8a57" opacity=".75">$</text>
-    ${eyes}${mouth}
+    <g class="legs"><rect x="47" y="118" width="10" height="20" rx="4" fill="#11181e"/><rect x="63" y="118" width="10" height="20" rx="4" fill="#11181e"/><ellipse cx="51" cy="139" rx="8" ry="4" fill="#050806"/><ellipse cx="69" cy="139" rx="8" ry="4" fill="#050806"/></g>
+    <g class="arm l"><path d="M38 80q-12 10-10 26" stroke="#1b252d" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="28" cy="107" r="5.5" fill="#34e39a"/></g>
+    <path d="M36 122V86q0-14 24-16q24 2 24 16v36z" fill="url(#${id}s)"/>
+    <path d="M52 71l8 16 8-16z" fill="#f4fbf7"/>
+    <path d="M60 76l-3.5 4 3.5 22 3.5-22z" fill="#2ee59d"/><path d="M57 75h6l-3 4z" fill="#12b981"/>
+    <path d="M52 71l-7 5 7 16 8-5zM68 71l7 5-7 16-8-5z" fill="#2b3945"/>
+    <circle cx="60" cy="104" r="1.6" fill="#0b1014"/><circle cx="60" cy="112" r="1.6" fill="#0b1014"/>
+    <path d="M73 86h6" stroke="#2ee59d" stroke-width="2.4" stroke-linecap="round"/>
+    <g class="arm r"><path d="M82 80q10 10 10 22" stroke="#1b252d" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="92" cy="103" r="5.5" fill="#34e39a"/>
+      <g class="case">${bills}<path d="M87 105q0-5 5-5t5 5" stroke="#3b240d" stroke-width="2.6" fill="none"/><rect x="78" y="105" width="28" height="21" rx="4" fill="url(#${id}b)"/><rect x="78" y="112" width="28" height="2.4" fill="#3b240d" opacity=".6"/><rect x="89" y="110" width="6" height="6" rx="1.2" fill="#f5c542"/><text x="92" y="124" text-anchor="middle" font-size="7" font-weight="900" fill="#f5c542">$</text></g></g>
+    <g class="head"><circle cx="60" cy="42" r="30" fill="#0a8a57"/><circle cx="60" cy="40" r="30" fill="url(#${id}g)"/><path d="M40 22q8-10 22-10" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".35"/>${eyes}${mouth}</g>
   </g>${zz}</svg>`;
 }
 function coinPoke(el){sfx('coin');buzz(12);el.classList.remove('m-idle');el.classList.add('m-happy');setTimeout(()=>{el.classList.remove('m-happy')},1300)}
@@ -474,7 +488,7 @@ const VIEWS=[['home','Inicio','home'],['accounts','Tarjetas','card'],['moves','M
 function buildNav(){
   const n=$('nav');
   n.innerHTML=VIEWS.slice(0,2).map(v=>navBtn(v)).join('')+`<button class="fab" data-nosfx onclick="sfx('open');openQuick()" aria-label="Agregar">${ic('plus',26,2.4)}</button>`+VIEWS.slice(2).map(v=>navBtn(v)).join('');
-  $('side').innerHTML=`<div class="brandrow">${logoSVG(38)} Lana</div>`+VIEWS.concat([['settings','Ajustes','settings']]).map(v=>`<button class="nv ${view===v[0]?'on':''}" onclick="go('${v[0]}')">${ic(v[2],20)} ${v[1]}</button>`).join('')+`<button class="btn" onclick="sfx('open');openQuick()">${ic('plus',18,2.4)} Agregar</button>`;
+  $('side').innerHTML=`<div class="brandrow">${logoSVG(38)} North</div>`+VIEWS.concat([['settings','Ajustes','settings']]).map(v=>`<button class="nv ${view===v[0]?'on':''}" onclick="go('${v[0]}')">${ic(v[2],20)} ${v[1]}</button>`).join('')+`<button class="btn" onclick="sfx('open');openQuick()">${ic('plus',18,2.4)} Agregar</button>`;
 }
 function navBtn(v){return `<button class="${view===v[0]?'on':''}" onclick="go('${v[0]}')">${ic(v[2],22)}<span>${v[1]}</span></button>`}
 function go(v){if(v!==view)sfx('nav');buzz(6);view=v;buildNav();render();window.scrollTo({top:0,behavior:'smooth'})}
@@ -838,7 +852,7 @@ function statsView(){
     <div class="stat"><b>${T.util!=null?Math.round(T.util*100)+'%':'—'}</b><span>Uso de crédito</span></div>
     <div class="stat"><b>${income?Math.round(T.monthly/income*100)+'%':'—'}</b><span>Ingreso a deudas</span></div></div></section>
   ${debts.length?`<section class="card"><div style="font-weight:700;margin-bottom:6px">¿A quién le debes más?</div>${debts.map((a,k)=>`<div class="cat-row"><div class="nm">${ic(a.kind==='card'?'card':'loan',15)} ${esc(a.name)}</div><div class="tr"><i style="width:${a.balance/dmax*100}%;animation-delay:${k*.06}s"></i></div><div class="v">${M(a.balance)}</div></div>`).join('')}</section>`:''}
-  <div class="sec">Consejos de Lana</div>
+  <div class="sec">Consejos de North</div>
   <section class="card"><div style="display:flex;justify-content:center;margin-bottom:4px">${coinSVG(80,'think')}</div>${tips.map(([i,c,t])=>`<div class="tip ${c}">${ic(i,18)}<div>${esc(t)}</div></div>`).join('')}</section>`;
   return topBar('Métricas')+`<div class="grid2"><div>${left}</div><div>${right}</div></div>`;
 }
@@ -846,7 +860,7 @@ function statsView(){
 /* ====================== Ajustes ====================== */
 function settingsView(){
   const st=pushState();
-  const pushTxt={on:'Activadas en este dispositivo',off:'Toca para activarlas',install:'Primero instala Lana en tu pantalla de inicio',denied:'Bloqueadas en los ajustes del teléfono',unsupported:'Este navegador no las permite'}[st];
+  const pushTxt={on:'Activadas en este dispositivo',off:'Toca para activarlas',install:'Primero instala North en tu pantalla de inicio',denied:'Bloqueadas en los ajustes del teléfono',unsupported:'Este navegador no las permite'}[st];
   return topBar('Ajustes')+`
   <section class="card" style="display:flex;align-items:center;gap:14px">${coinSVG(70,'happy')}<div><div style="font-weight:700;font-size:18px">${esc(user?.user_metadata?.name||userName())}</div><div class="muted small">${esc(user?.email||'')}</div></div></section>
   <section class="card list">
@@ -857,7 +871,7 @@ function settingsView(){
     <div class="li" onclick="openName()"><div class="ico">${ic('user',19)}</div><div class="mid"><div class="t">Mi nombre</div></div>${ic('chevron',18)}</div>
     <div class="li" onclick="if(confirm('¿Cerrar sesión?'))logout()" style="color:var(--danger)"><div class="ico" style="color:var(--danger)">${ic('logout',19)}</div><div class="mid"><div class="t">Cerrar sesión</div></div></div>
   </section>
-  <div class="muted small" style="text-align:center;line-height:1.5;margin:10px 20px">Lana no se conecta a tu banco: tú anotas los datos. Tu información es privada y solo tú la ves con tu cuenta.<br>Lana es una herramienta de organización, no asesoría financiera.</div>`;
+  <div class="muted small" style="text-align:center;line-height:1.5;margin:10px 20px">North no se conecta a tu banco: tú anotas los datos. Tu información es privada y solo tú la ves con tu cuenta.<br>North es una herramienta de organización, no asesoría financiera.</div>`;
 }
 function openIncome(){
   openSheet(head('Ingreso mensual','Lo que te entra al mes, más o menos. Sirve para tus métricas.')+`<div class="field"><input id="incAmt" class="amount-in" inputmode="decimal" value="${settings.monthly_income||''}" placeholder="$0"></div><button class="btn" onclick="saveIncome(this)">${ic('check',18)} Guardar</button>`);
@@ -878,7 +892,7 @@ function pushState(){
 }
 function openNotifPrompt(afterId){
   const st=pushState();
-  const body={install:'En iPhone: abre Lana en Safari, toca Compartir y luego "Agregar a pantalla de inicio". Abre Lana desde ese ícono y activa los avisos en Ajustes.',unsupported:'Abre Lana desde el ícono instalado en tu teléfono para recibir avisos.',denied:'Las notificaciones están bloqueadas. Actívalas en Ajustes del teléfono › Notificaciones › Lana.',on:'Ya están activadas en este dispositivo.'}[st];
+  const body={install:'En iPhone: abre North en Safari, toca Compartir y luego "Agregar a pantalla de inicio". Abre North desde ese ícono y activa los avisos en Ajustes.',unsupported:'Abre North desde el ícono instalado en tu teléfono para recibir avisos.',denied:'Las notificaciones están bloqueadas. Actívalas en Ajustes del teléfono › Notificaciones › North.',on:'Ya están activadas en este dispositivo.'}[st];
   openSheet(head('¿Te aviso antes de pagar?')+`<div style="display:flex;justify-content:center">${coinSVG(120,'wave')}</div><p style="text-align:center;color:var(--ink2);line-height:1.5">Te mando una notificación 3 días antes, 1 día antes y el día de tu fecha límite, y en tu fecha de corte. Así nunca pagas intereses por olvido.</p>
   ${body?`<div class="tip">${ic('bulb',18)}<div>${body}</div></div>`:`<button class="btn" onclick="enablePush(this,'${afterId||''}')">${ic('bell',18)} Sí, avísame</button>`}
   <button class="btn alt" onclick="${afterId?`openDetail('${afterId}')`:'closeSheet()'}">Ahora no</button>`);

@@ -1,4 +1,4 @@
-# Lana — Mis finanzas
+# North — Mis finanzas
 
 App web instalable (PWA) para llevar tarjetas de crédito, préstamos, pagos fijos, gastos e ingresos, con métricas y avisos antes de cada fecha de pago. No se conecta al banco: todo se captura a mano.
 
