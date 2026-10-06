@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#131416">
+<meta name="theme-color" content="#000000">
 <meta name="north-version" content="3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -233,6 +233,7 @@ body{background:var(--bg)!important}
 .toast{background:#ededee;color:#131416}
 .coin-svg text[fill="#b9ffdf"]{fill:#9b9ca3}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@keyframes nfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes nhop{0%,100%{transform:translateY(0)}40%{transform:translateY(-10px) scale(1.04,.96)}}@keyframes nspin{0%,100%{transform:rotate(0)}30%{transform:translateY(-12px) rotate(-8deg)}60%{transform:translateY(-12px) rotate(8deg)}}@keyframes nsad{0%,100%{transform:translateY(3px) rotate(-4deg)}}@keyframes ntilt{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
 </style>
 </head>
 <body>
@@ -350,39 +351,12 @@ function ic(n,s=20,w=1.9){return `<svg class="ic" width="${s}" height="${s}" vie
 /* ====================== mascota: moneda con lentes ====================== */
 let _cid=0;
 function coinSVG(size=90,mood='idle'){
-  if(isSleep()&&mood!=='celebrate')mood='sleep';
-  const id='c'+(++_cid),sleep=mood==='sleep';
-  const eyes=sleep
-    ?`<path d="M47 40q5 4 10 0M63 40q5 4 10 0" stroke="#08331f" stroke-width="2.8" fill="none" stroke-linecap="round"/>`
-    :`<g class="glass"><path d="M40 36h40" stroke="#050806" stroke-width="3" stroke-linecap="round"/><path d="M41 36h16q1 11-8 11t-8-11z" fill="#050806"/><path d="M63 36h16q1 11-8 11t-8-11z" fill="#050806"/><path d="M45 39l5-1M67 39l5-1" stroke="#4dffb8" stroke-width="1.8" stroke-linecap="round" opacity=".85"/></g>`;
-  const mouth=mood==='happy'||mood==='celebrate'||mood==='wave'
-    ?`<path d="M52 52q8 9 16 0z" fill="#06331f" stroke="#06331f" stroke-width="2" stroke-linejoin="round"/><path d="M55 55q5 3 10 0" fill="#ff7b8a"/>`
-    :mood==='think'?`<path d="M54 55q6-3 11 1" stroke="#06331f" stroke-width="2.6" fill="none" stroke-linecap="round"/>`
-    :sleep?`<ellipse cx="60" cy="55" rx="3" ry="2.2" fill="#06331f"/>`
-    :`<path d="M52 52q8 7 16 0" stroke="#06331f" stroke-width="2.8" fill="none" stroke-linecap="round"/>`;
-  const zz=sleep?`<text class="z" x="88" y="20" font-size="12" font-weight="800" fill="#b9ffdf">z</text><text class="z z2" x="96" y="11" font-size="15" font-weight="800" fill="#b9ffdf">z</text><text class="z z3" x="104" y="2" font-size="18" font-weight="800" fill="#b9ffdf">Z</text>`:'';
-  const bills=`<g class="bills"><rect class="bill b1" x="92" y="104" width="13" height="7" rx="1.5" fill="#7dffc0" stroke="#0a8a57"/><rect class="bill b2" x="98" y="104" width="13" height="7" rx="1.5" fill="#7dffc0" stroke="#0a8a57"/><rect class="bill b3" x="95" y="104" width="13" height="7" rx="1.5" fill="#7dffc0" stroke="#0a8a57"/></g>`;
-  return `<svg class="coin-svg m-${mood}" width="${size}" height="${size}" viewBox="0 0 120 150" onclick="coinPoke(this)" role="img" aria-label="North, tu asesor de bolsillo">
-  <defs><radialGradient id="${id}g" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#b8ffd9"/><stop offset=".45" stop-color="#34e39a"/><stop offset="1" stop-color="#0c9a62"/></radialGradient>
-  <linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23303a"/><stop offset="1" stop-color="#11181e"/></linearGradient>
-  <linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a2b"/><stop offset="1" stop-color="#5a3715"/></linearGradient></defs>
-  <ellipse class="cs" cx="60" cy="145" rx="30" ry="4.5" fill="#000"/>
-  <g class="cb">
-    <g class="legs"><rect x="47" y="118" width="10" height="20" rx="4" fill="#11181e"/><rect x="63" y="118" width="10" height="20" rx="4" fill="#11181e"/><ellipse cx="51" cy="139" rx="8" ry="4" fill="#050806"/><ellipse cx="69" cy="139" rx="8" ry="4" fill="#050806"/></g>
-    <g class="arm l"><path d="M38 80q-12 10-10 26" stroke="#1b252d" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="28" cy="107" r="5.5" fill="#34e39a"/></g>
-    <path d="M36 122V86q0-14 24-16q24 2 24 16v36z" fill="url(#${id}s)"/>
-    <path d="M52 71l8 16 8-16z" fill="#f4fbf7"/>
-    <path d="M60 76l-3.5 4 3.5 22 3.5-22z" fill="#2ee59d"/><path d="M57 75h6l-3 4z" fill="#12b981"/>
-    <path d="M52 71l-7 5 7 16 8-5zM68 71l7 5-7 16-8-5z" fill="#2b3945"/>
-    <circle cx="60" cy="104" r="1.6" fill="#0b1014"/><circle cx="60" cy="112" r="1.6" fill="#0b1014"/>
-    <path d="M73 86h6" stroke="#2ee59d" stroke-width="2.4" stroke-linecap="round"/>
-    <g class="arm r"><path d="M82 80q10 10 10 22" stroke="#1b252d" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="92" cy="103" r="5.5" fill="#34e39a"/>
-      <g class="case">${bills}<path d="M87 105q0-5 5-5t5 5" stroke="#3b240d" stroke-width="2.6" fill="none"/><rect x="78" y="105" width="28" height="21" rx="4" fill="url(#${id}b)"/><rect x="78" y="112" width="28" height="2.4" fill="#3b240d" opacity=".6"/><rect x="89" y="110" width="6" height="6" rx="1.2" fill="#f5c542"/><text x="92" y="124" text-anchor="middle" font-size="7" font-weight="900" fill="#f5c542">$</text></g></g>
-    <g class="head"><circle cx="60" cy="42" r="30" fill="#0a8a57"/><circle cx="60" cy="40" r="30" fill="url(#${id}g)"/><path d="M40 22q8-10 22-10" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".35"/>${eyes}${mouth}</g>
-  </g>${zz}</svg>`;
+  // La marca de North: una N verde que brilla y reacciona según el momento.
+  const anim={happy:'nhop',celebrate:'nspin',sad:'nsad',think:'ntilt'}[mood]||'nfloat';
+  return `<svg class="nmark" width="${size}" height="${size}" viewBox="0 0 100 100" role="img" aria-label="North" style="overflow:visible"><defs><linearGradient id="ng${size}${mood}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6dffa8"/><stop offset=".55" stop-color="#22d36b"/><stop offset="1" stop-color="#0d8a4a"/></linearGradient><filter id="nb${size}${mood}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs><g style="transform-box:fill-box;transform-origin:50% 100%;animation:${anim} ${mood==='celebrate'?1.2:3}s ease-in-out infinite"><path d="M24 84V16h15l23 38V16h14v68H62L39 46v38z" fill="#22d36b" opacity=".55" filter="url(#nb${size}${mood})"/><path d="M24 84V16h15l23 38V16h14v68H62L39 46v38z" fill="url(#ng${size}${mood})"/><path d="M24 16h15l23 38" stroke="#d2ffe4" stroke-width="1.6" fill="none" opacity=".55"/></g></svg>`;
 }
 function coinPoke(el){sfx('coin');buzz(12);el.classList.remove('m-idle');el.classList.add('m-happy');setTimeout(()=>{el.classList.remove('m-happy')},1300)}
-function logoSVG(s=34){return `<svg width="${s}" height="${s}" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#050c09"/><circle cx="32" cy="32" r="19" fill="#2ee59d"/><circle cx="32" cy="32" r="14.5" fill="none" stroke="#0a8a57" stroke-width="1.6" stroke-dasharray="1.5 3.5"/><path d="M20 29h24" stroke="#050806" stroke-width="2.4" stroke-linecap="round"/><path d="M21 29h9q.5 6-4.5 6t-4.5-6zM34 29h9q.5 6-4.5 6t-4.5-6z" fill="#050806"/><path d="M27 39q5 4 10 0" stroke="#06331f" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`}
+function logoSVG(s=34){return `<svg width="${s}" height="${s}" viewBox="0 0 64 64" role="img" aria-label="North"><defs><linearGradient id="nlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6dffa8"/><stop offset=".55" stop-color="#22d36b"/><stop offset="1" stop-color="#0d8a4a"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="#000"/><path d="M18 49V15h7.5L39 36V15h7.5v34H39L25.5 28v21z" fill="url(#nlg)"/></svg>`}
 
 /* ====================== toast y festejos ====================== */
 let toastT=null;
